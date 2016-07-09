@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Zen Games</string>
+    <string name="my_tb_title">Zen Games</string>
+    <string name="chillout_description">Brief Description of Game, what to expect, etc </string>
+    <string name="gi_description">Brief Description of Guided Imagery, what to expect, etc </string>
+    <string name="cw_description">Brief Description of Color word, what to expect, etc </string>
+    <!-- package names for different games that the user can go to once start is clicked -->
+    <string name="game1_package_name">com.sleepediary</string>
+    <string name="game2_package_name">com.example.fathimamulaffer.game1</string>
+    <string name="game3_package_name">com.example.fathimamulaffer.game3</string>
+    <!-- Day count alarm set time [used in main activity - setDayAlarm -->
+    <string name="daycount_alarm_hr"></string>
+    <string name="daycount_alarm_min"></string>
+</resources>

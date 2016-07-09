@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/step1"
+        android:text="today"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mainpage_item_height"/>
+
+    <TextView
+        android:id="@+id/f1chillout"
+        android:background="@color/pink"
+        android:text="play chill out"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mainpage_item_height"/>
+
+</LinearLayout>
