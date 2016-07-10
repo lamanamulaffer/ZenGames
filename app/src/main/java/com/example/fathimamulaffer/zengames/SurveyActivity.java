@@ -21,7 +21,8 @@ public class SurveyActivity extends AppCompatActivity{
     RadioGroup q1,q2,q3;
     EditText q4;
     Context context;
-
+    SharedPreference sp;
+    TextView dayCount3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +30,8 @@ public class SurveyActivity extends AppCompatActivity{
         context = this;
         Toolbar my_toolbar = (Toolbar) findViewById(R.id.my_toolbar2);
         setSupportActionBar(my_toolbar);
+        dayCount3 = (TextView) findViewById(R.id.daycount2);
+        dayCount3.setText("Day " +(sp.getDayCount(this))+"/21");
         //initialize elements
         q1 = (RadioGroup)findViewById(R.id.q1);
         q2 = (RadioGroup)findViewById(R.id.q2);

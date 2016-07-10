@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.Calendar;
 
 /*
@@ -43,7 +45,8 @@ public class MainActivity extends AppCompatActivity
     private Integer curFragment;
     //keeps track of which option is selected in the cur fragment
     private String selected;
-
+    private String[] workstack;
+    Context context;
     //request code for notification alarm
     public final int NOTIFICATION_TIMER = 11;
     @Override
@@ -86,8 +89,13 @@ public class MainActivity extends AppCompatActivity
             //Alarm that fires every day to change day count
             // which then triggers change in fragment view [Frag1, Frag2 or Frag3]
             setDayAlarm();
+            //Log.i("TEST","1.1");
             setNotificationAlarm(NOTIFICATION_TIMER);
-            selectFragment();
+            context = this;
+            //Log.i("TEST","1.2");
+            //selectFragment();
+            selectF();
+            //Log.i("TEST","1.3");
         }
     }
     @Override
@@ -107,39 +115,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent){
         super.onNewIntent(intent);
+        Log.i("INHERE","in here");
         setIntent(intent);
-    }
-    //This is called by MyReceiver.
-    // Depending on what option in fragment selected - disables this option
-    public void disableOption(String option){
-        FragmentManager fm = getSupportFragmentManager();
-        if (curFragment == 1){//frag 1 view
-            if ("CO".equals(option)){
-                FragmentOne f = (FragmentOne)fm.findFragmentById(R.id.fragment_container);
-                f.disableChillout();
-            }
-        }
-        else if (curFragment == 2){//frag2 view
-            FragmentTwo f = (FragmentTwo)fm.findFragmentById(R.id.fragment_container);
-            if ("CO".equals(option)){//chillout option is selected
-                f.disableChillout();
-            }
-            else if ("GI".equals(option)){
-                f.disableGI();
-            }
-        }
-        else if (curFragment == 3){
-            FragmentThree f = (FragmentThree)fm.findFragmentById(R.id.fragment_container);
-            if ("CO".equals(option)){
-                f.disableChillout();
-            }
-            else if ("CW".equals(option)){
-                f.disableCW();
-            }
-            else if ("Survey".equals(option)){ //u can use survey also
-                f.disablesurvey();
-            }
-        }
     }
 
     //chooses which fragment to showcase depending on the day count
@@ -174,6 +151,158 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    //updates rollover, work stack, cur fragment, sets up relevant frag
+    public void selectF(){
+        String f1,f2,f3,f4,f5,f6;
+        f1 = "CO"; f2="GI,CW1,CO,CW2"; f3="GI,CW1,CO,S";f4="CW,CO,S";f5="CO,S";f6="S";
+        Log.i("TEST","2.1");
+        Integer day = sp.getDayCount(this);
+        Integer rollover = sp.getRollOver(this);
+        String[] workstack = sp.getWorkStack(this);
+        String ws = TextUtils.join(",",workstack);
+        Fragment fragment = null;
+        Class fragmentClass;
+        fragmentClass = getFragmentByWorkStack();
+        //fragmentClass = F6.class;
+        /*
+        Log.i("TESTING","-------------");
+        Log.i("TESTING","DAY: " + day);
+        Log.i("TESTING","CUR FRAG" + sp.getCurFragment(this));
+        Log.i("TESTING","WS: "+ Arrays.toString(sp.getWorkStack(this)));
+        Log.i("TESTING","ROLLOVER" + rollover);
+        Log.i("TESTING","---------------");*/
+        try{
+            //Log.i("TEST","2.3");
+            fragment = (Fragment) fragmentClass.newInstance();
+            //Log.i("TEST","2.4");
+        } catch (Exception e) {
+            //Log.i("TEST","2.5");
+            e.printStackTrace();
+        }
+        //setting up fragment details
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container,fragment);
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+    private Class getFragmentByWorkStack(){
+        String f1,f2,f3,f4,f5,f6,f0;
+        f0="";f1 = "CO"; f2="GI,CW1,CO,CW2"; f3="GI,CW1,CO,S";f4="CW,CO,S";f5="CO,S";f6="S";
+        Integer day = sp.getDayCount(this);
+        Integer rollover = sp.getRollOver(this);
+        String[] workstack = sp.getWorkStack(this);
+        String ws = TextUtils.join(",",workstack);
+        Class fragmentClass=null;
+        if (ws.equals(f1)){
+            fragmentClass = getFragmentByDay();
+        }//work stack remains the same
+        else if (ws.equals(f2)){
+            if (rollover <3){
+                fragmentClass=F2.class;sp.setRollOver(this,rollover+1);sp.setCurFragment(this,2);
+            }
+            else {fragmentClass = getFragmentByDay();}
+        }
+        else if (ws.equals(f3)){
+            if (rollover<3){
+                fragmentClass=F3.class;sp.setRollOver(this,rollover+1);sp.setCurFragment(this,3);
+            }
+            else{fragmentClass = getFragmentByDay();}
+        }
+        else if (ws.equals(f4)){
+            if (rollover<3){
+                fragmentClass=F4.class;sp.setRollOver(this,rollover+1);sp.setCurFragment(this,4);
+            }
+            else{fragmentClass = getFragmentByDay();}
+        }
+        else if (ws.equals(f5)){
+            if(rollover<3){
+               fragmentClass = F5.class;sp.setRollOver(this,rollover+1);sp.setCurFragment(this,5);
+            }
+            else{fragmentClass = getFragmentByDay();}
+        }
+        else if (ws.equals(f6)){
+            if(rollover<3){
+                fragmentClass = F6.class;sp.setRollOver(this,rollover+1);sp.setCurFragment(this,6);
+            }
+            else{fragmentClass = getFragmentByDay();}
+        }
+        else if (ws.equals(f0)){fragmentClass=getFragmentByDay();
+        }
+        return fragmentClass;
+    }
+    private Class getFragmentByDay(){
+        String f1,f2,f3,f4,f5,f6;
+        f1 = "CO"; f2="GI,CW1,CO,CW2"; f3="GI,CW1,CO,S";f4="CW,CO,S";f5="CO,S";f6="S";
+        Integer day = sp.getDayCount(this);
+        Integer rollover = sp.getRollOver(this);
+        String[] workstack = sp.getWorkStack(this);
+        Class fragmentClass;
+        if (day==0){fragmentClass = F0.class;sp.setWorkStack(this,"".split(","));sp.setRollOver(this,0);sp.setCurFragment(this,0);}
+        else if (day==1){fragmentClass = F2.class; sp.setWorkStack(this,f2.split(","));sp.setRollOver(this,0);sp.setCurFragment(this,2);}
+        else if ((day==7) || (day==14) || (day==21)){fragmentClass = F3.class;sp.setWorkStack(this,f3.split(","));sp.setRollOver(this,0);sp.setCurFragment(this,3);}
+        else if (day > 21){fragmentClass = F7.class;sp.setWorkStack(this,"".split(","));sp.setRollOver(this,0);sp.setCurFragment(this,7);}//this will give an empty work stack
+        else{fragmentClass = F1.class;sp.setWorkStack(this,f1.split(","));sp.setRollOver(this,0);sp.setCurFragment(this,1);}
+        return fragmentClass;
+    }
+
+    public void commF(String code) {
+        FragmentManager fm = getSupportFragmentManager();
+        if (sp.getCurFragment(this) == 1) {
+            F1 f = (F1) fm.findFragmentById(R.id.fragment_container);
+            if ("CO".equals(code)) {
+                f.disableCO();
+            }
+        } else if (sp.getCurFragment(this) == 2) {
+            F2 f = (F2) fm.findFragmentById(R.id.fragment_container);
+            if ("GI".equals(code)) {
+                f.disableGI();
+            } else if ("CO".equals(code)) {
+                f.disableCO();
+            } else if ("CW".equals(code)) {
+                if (sp.getCWNum(this) == 0) {
+                    f.disableCW1();
+                    sp.setCWNum(this, 1);
+                } else if (sp.getCWNum(this) == 1) {
+                    f.disableCW2();
+                    sp.setCWNum(this, 0);
+                }
+            }
+        } else if (sp.getCurFragment(this) == 3) {
+            F3 f3 = (F3) fm.findFragmentById(R.id.fragment_container);
+            if ("GI".equals(code)) {
+                f3.disableGI();
+            } else if ("CO".equals(code)) {
+                f3.disableCO();
+            } else if ("CW".equals(code)) {
+                f3.disableCW1();
+            } else if ("S".equals(code)) {
+                f3.disableS();
+            }
+        } else if (sp.getCurFragment(this) == 4) {
+            F4 f = (F4) fm.findFragmentById(R.id.fragment_container);
+            if ("CO".equals(code)) {
+                f.disableCO();
+            } else if ("CW".equals(code)) {
+                f.disableCW1();
+            } else if ("S".equals(code)) {
+                f.disableS();
+            }
+        } else if (sp.getCurFragment(this) == 5) {
+            F5 f = (F5) fm.findFragmentById(R.id.fragment_container);
+            if ("CO".equals(code)) {
+                f.disableCO();
+            } else if ("S".equals(code)) {
+                f.disableS();
+            }
+        } else if (sp.getCurFragment(this) == 6) {
+            F6 f = (F6) fm.findFragmentById(R.id.fragment_container);
+            if ("S".equals(code)) {
+                f.disableS();
+            }
+        }
+
+    }
+
     //set an alarm that fires an intent every minute.
     //setup time: 1:11 am
     //alarm calls AlarmReceiver
@@ -189,7 +318,7 @@ public class MainActivity extends AppCompatActivity
         calendar.set(Calendar.MINUTE,11);
         //set alarm for every 3 minutes - actually has to be for every day
         manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
-                1000*60*3,pendingIntent);
+                1000*30,pendingIntent);
     }
 
     //set an alarm that fires an intent every 2 mins for notification
@@ -227,6 +356,8 @@ public class MainActivity extends AppCompatActivity
     //description activity showcases the different description fragments based on the recvd msg
     @Override
     public void onFragmentMsg(String TAG) {
+        //Log.i("TAG",TAG);
+        FragmentManager fm = getSupportFragmentManager();
         Logging log = new Logging(this);
         Long time = (Long) System.currentTimeMillis();
         if (TAG == "CO Selected"){
@@ -272,7 +403,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.fab:
                 Logging log = new Logging(this);
                 Long time = (Long) System.currentTimeMillis();
-                String event = "profileButtonPressed";                log.writeLog(event,time);
+                String event = "profileButtonPressed";
+                log.writeLog(event,time);
                 Intent ii = new Intent(this,ProfileActivity.class);
                 startActivity(ii);
                 break;

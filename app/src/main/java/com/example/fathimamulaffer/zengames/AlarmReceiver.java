@@ -16,10 +16,8 @@ public class AlarmReceiver extends BroadcastReceiver{
         //Toast.makeText(context,"day count updated",Toast.LENGTH_SHORT).show();
         sp = new SharedPreference();
         Integer day_count = sp.getDayCount(context);
-        if (day_count < 21) {
-            day_count = day_count + 1;
-            sp.setDayCount(context, day_count);
-        }
+        day_count = day_count + 1;
+        sp.setDayCount(context, day_count);
         Intent i = new Intent("com.example.fathimamulaffer.zengames.USER_ACTION");
         context.sendBroadcast(i);
 

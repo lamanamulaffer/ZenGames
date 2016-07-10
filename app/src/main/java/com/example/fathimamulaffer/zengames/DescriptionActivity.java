@@ -10,12 +10,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 /*
 * Activity show cases game descriptions */
@@ -130,19 +133,20 @@ implements OnFragmentListener{
             String event = "chilloutStarted";
             log.writeLog(event,time);
             //Intent intent = getPackageManager().getLaunchIntentForPackage(getResources().getString(R.string.game1_package_name));
-            Intent intent = new Intent(this,PlayGuidedImagery.class);
+            Intent intent = new Intent(this,DummyChillOut.class);
             startActivity(intent);
         }
         else if (TAG == "GI Started"){
             String event = "guidedimageryStarted";
             log.writeLog(event,time);
-            Intent intent = getPackageManager().getLaunchIntentForPackage(getResources().getString(R.string.game2_package_name));
+            Intent intent = new Intent(this,PlayGuidedImagery.class);
             startActivity(intent);
         }
         else if (TAG == "CW Started"){
             String event = "colorwordStarted";
             log.writeLog(event,time);
-            Intent intent = getPackageManager().getLaunchIntentForPackage(getResources().getString(R.string.game3_package_name));
+            //Intent intent = getPackageManager().getLaunchIntentForPackage(getResources().getString(R.string.game3_package_name));
+            Intent intent = new Intent(this,DummyCWActivity.class);
             startActivity(intent);
         }
     }

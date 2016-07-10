@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.gesture.Prediction;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 /*  ******** Keys in SP file **********
 *  "Initialize" : first time access (0), returning access (1)
@@ -109,4 +110,61 @@ public class SharedPreference {
         return time;
     }
 
+    public void setWorkStack(Context context, String[] stackarray){
+        SharedPreferences sp;
+        SharedPreferences.Editor editor;
+        sp = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        editor = sp.edit();
+        String s = TextUtils.join(",",stackarray); //array: [a,b,c] -> a,b,c
+        editor.putString("ws",s);
+        editor.apply();
+    }
+    public String[] getWorkStack(Context context){
+        SharedPreferences sp;
+        sp = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        String s = sp.getString("ws","");
+        return s.split(",");
+    }
+
+    public void setRollOver(Context context, Integer r){
+        SharedPreferences sp;
+        SharedPreferences.Editor editor;
+        sp = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        editor = sp.edit();
+        editor.putInt("rollover",r);
+        editor.apply();
+    }
+    public Integer getRollOver(Context context){
+        SharedPreferences sp;
+        sp = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        return sp.getInt("rollover",0);
+    }
+
+    public void setCurFragment(Context context, Integer c){
+        SharedPreferences sp;
+        SharedPreferences.Editor editor;
+        sp = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        editor = sp.edit();
+        editor.putInt("cur_frag",c);
+        editor.apply();
+    }
+    public Integer getCurFragment(Context context){
+        SharedPreferences sp;
+        sp = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        return sp.getInt("cur_frag",0);  //default
+    }
+
+    public void setCWNum(Context context, Integer i){
+        SharedPreferences sp;
+        SharedPreferences.Editor editor;
+        sp = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        editor = sp.edit();
+        editor.putInt("CNum",i);
+        editor.apply();
+    }
+    public Integer getCWNum(Context context){
+        SharedPreferences sp;
+        sp = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        return sp.getInt("CNum",0);
+    }
 }
