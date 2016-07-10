@@ -1,6 +1,9 @@
 package com.example.fathimamulaffer.zengames;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.io.IOException;
 
 /*
 * Activity show cases game descriptions */
@@ -124,7 +129,8 @@ implements OnFragmentListener{
         if (TAG == "CO Started"){
             String event = "chilloutStarted";
             log.writeLog(event,time);
-            Intent intent = getPackageManager().getLaunchIntentForPackage(getResources().getString(R.string.game1_package_name));
+            //Intent intent = getPackageManager().getLaunchIntentForPackage(getResources().getString(R.string.game1_package_name));
+            Intent intent = new Intent(this,PlayGuidedImagery.class);
             startActivity(intent);
         }
         else if (TAG == "GI Started"){
@@ -139,9 +145,6 @@ implements OnFragmentListener{
             Intent intent = getPackageManager().getLaunchIntentForPackage(getResources().getString(R.string.game3_package_name));
             startActivity(intent);
         }
-
-
     }
-
 
 }

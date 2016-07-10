@@ -13,7 +13,7 @@ public class AlarmReceiver extends BroadcastReceiver{
     SharedPreference sp;
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context,"day count updated",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context,"day count updated",Toast.LENGTH_SHORT).show();
         sp = new SharedPreference();
         Integer day_count = sp.getDayCount(context);
         if (day_count < 21) {

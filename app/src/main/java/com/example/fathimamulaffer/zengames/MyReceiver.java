@@ -3,6 +3,7 @@ package com.example.fathimamulaffer.zengames;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 //This intent has several filters registered to it
@@ -18,6 +19,8 @@ public class MyReceiver  extends BroadcastReceiver{
         SharedPreference sp = new SharedPreference();
         MainActivity mainActivity = ((MyApplication) context.getApplicationContext()).mainActivity;
         DescriptionActivity descriptionActivity = ((MyApplication) context.getApplicationContext()).descriptionActivity;
+        Log.i("SURVEY","4");
+        Log.i("SURVEY",intent.getAction());/*
         if (intent.getAction().equals(daycount_action)){
             Integer day_count = sp.getDayCount(context);
             //MainActivity mainActivity = ((MyApplication) context.getApplicationContext()).mainActivity;
@@ -49,12 +52,13 @@ public class MyReceiver  extends BroadcastReceiver{
             mainActivity.disableOption("CW");
 
         }
-        else if (intent.getAction().equals(survey_action)){
+        else if ("com.example.fathimamulaffer.zengames.Survey_DONE".equals(intent.getAction())){
+            Log.i("SURVEY","5");
             Toast.makeText(context,"survey_action",Toast.LENGTH_SHORT).show();
             descriptionActivity.disableFragment(); //disable app frag
             mainActivity.disableOption("Survey");
 
-        }
+        }*/
 
 
     }

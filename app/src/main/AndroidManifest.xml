@@ -3,7 +3,7 @@
     package="com.example.fathimamulaffer.zengames">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MyApplication"
@@ -12,11 +12,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="com.example.fathimamulaffer.zengames.NOTIFY"/>
+                <action android:name="com.example.fathimamulaffer.zengames.NOTIFY" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -29,21 +30,23 @@
         <receiver android:name=".MyReceiver">
             <intent-filter>
                 <action android:name="com.example.fathimamulaffer.zengames.USER_ACTION" />
-                <action android:name="com.example.fathimamulaffer.zengames.CO_DONE"/>
-                <action android:name="com.example.fathimamulaffer.zengames.GI_DONE"/>
-                <action android:name="com.example.fathimamulaffer.zengames.CW_DONE"/>
+                <action android:name="com.example.fathimamulaffer.zengames.CO_DONE" />
+                <action android:name="com.example.fathimamulaffer.zengames.GI_DONE" />
+                <action android:name="com.example.fathimamulaffer.zengames.CW_DONE" />
+                <action android:name="com.example.fathimamulaffer.zengames.Survey_DONE" />
             </intent-filter>
-
         </receiver>
         <receiver android:name=".NotificationAlarmReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <activity android:name=".Initialization" />
         <activity android:name=".DescriptionActivity" />
         <activity android:name=".SurveyActivity" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".PlayGuidedImagery"></activity>
     </application>
 
 </manifest>

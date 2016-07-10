@@ -15,7 +15,7 @@ public class NotificationAlarmReceiver extends BroadcastReceiver {
     SharedPreference sp;
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context,"noti",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context,"noti",Toast.LENGTH_SHORT).show();
         sp = new SharedPreference();
         //once experiment is over - there's no need to send notifications
         if (!(sp.getDayCount(context) > 21)){
