@@ -193,10 +193,19 @@ public class MainActivity extends AppCompatActivity
         String[] workstack = sp.getWorkStack(this);
         String ws = TextUtils.join(",",workstack);
         Class fragmentClass=null;
-        if (ws.equals(f1)){
+        //matching based on work to do.
+        //if "" or "CO" -> no roll over - look @ day n return
+        //if not either - then carry over from prev day
+        //if "GI,CW1,CO,CW2" - then ignore carry over - n show for approp day
+        //if "G1,CW1,CO" - hasn't played anything at all the prev day
+            //give back the same with ws - rollover=rollover+1
+        //if "CW1,CO" - then only 1 done the prev day
+            // - give back the same ws - update rollover
+
+        if (ws.equals(f1)){ //no roll over - just the usual
             fragmentClass = getFragmentByDay();
         }//work stack remains the same
-        else if (ws.equals(f2)){
+        else if (ws.equals(f2)){ //again no roll over
             if (rollover <3){
                 fragmentClass=F2.class;sp.setRollOver(this,rollover+1);sp.setCurFragment(this,2);
             }
@@ -237,11 +246,11 @@ public class MainActivity extends AppCompatActivity
         Integer rollover = sp.getRollOver(this);
         String[] workstack = sp.getWorkStack(this);
         Class fragmentClass;
-        if (day==0){fragmentClass = F0.class;sp.setWorkStack(this,"".split(","));sp.setRollOver(this,0);sp.setCurFragment(this,0);}
-        else if (day==1){fragmentClass = F2.class; sp.setWorkStack(this,f2.split(","));sp.setRollOver(this,0);sp.setCurFragment(this,2);}
-        else if ((day==7) || (day==14) || (day==21)){fragmentClass = F3.class;sp.setWorkStack(this,f3.split(","));sp.setRollOver(this,0);sp.setCurFragment(this,3);}
-        else if (day > 21){fragmentClass = F7.class;sp.setWorkStack(this,"".split(","));sp.setRollOver(this,0);sp.setCurFragment(this,7);}//this will give an empty work stack
-        else{fragmentClass = F1.class;sp.setWorkStack(this,f1.split(","));sp.setRollOver(this,0);sp.setCurFragment(this,1);}
+        if (day==0){fragmentClass = F0.class;sp.setWorkStack(this,"".split(","));sp.setCurFragment(this,0);}
+        else if (day==1){fragmentClass = F2.class; sp.setWorkStack(this,f2.split(","));sp.setCurFragment(this,2);}
+        else if ((day==7) || (day==14) || (day==21)){fragmentClass = F3.class;sp.setWorkStack(this,f3.split(","));sp.setCurFragment(this,3);}
+        else if (day > 21){fragmentClass = F7.class;sp.setWorkStack(this,"".split(","));sp.setCurFragment(this,7);}//this will give an empty work stack
+        else{fragmentClass = F1.class;sp.setWorkStack(this,f1.split(","));sp.setCurFragment(this,1);}
         return fragmentClass;
     }
 
